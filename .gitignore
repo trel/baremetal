@@ -1,0 +1,7 @@
+dhcp-dns
+docker/vsftpd/var/lib/ftp/pub
+docker/dnsmasq/tftpboot/*
+!docker/dnsmasq/tftpboot/pxelinux.cfg/
+1.test.dns.conf
+2.test.dhcp.conf
+test.hosts
