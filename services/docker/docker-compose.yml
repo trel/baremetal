@@ -1,0 +1,49 @@
+version: '3'
+services:
+  svc:
+    image: svc:latest
+    cap_add:
+      - NET_ADMIN
+    networks:
+      cluster:
+        ipv4_address:
+          172.16.1.21
+      management:
+        ipv4_address:
+          172.16.2.21
+    entrypoint: /scripts/entrypoint.sh
+    build:
+      context: ..
+      dockerfile: docker/svc/Dockerfile
+
+  client_clusternet:
+    image: client_clusternet:latest
+    cap_add:
+      - NET_ADMIN
+    networks: 
+      - cluster
+    entrypoint: /scripts/entrypoint.sh
+    build:
+      context: ./client_clusternet
+
+  client_mgtnet:
+    image: client_mgtnet:latest
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - management
+    entrypoint: /scripts/entrypoint.sh
+    build:
+      context: ./client_mgtnet
+
+networks:
+  cluster:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24
+  management:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.2.0/24

@@ -1,0 +1,50 @@
+;
+; /var/named/zones/adm/db.cls.osn
+; DNS zone map for the OSN cluster network
+;
+$TTL 3D
+$ORIGIN cls.osn.
+@       IN      SOA     dns01.cls.osn.  hostmaster.openstoragenetwork.org. (
+                        2019052801      ; serial format: yyyymmddrr
+                                        ; where rr = today's revision#
+                        8H              ; refresh, seconds
+                        2H              ; retry, seconds
+                        4W              ; expire, seconds
+                        1D )            ; minimum, seconds
+;
+; name servers
+cls.osn.                NS      SITE-dns01-cls.cls.osn.
+cls.osn.                NS      SITE-dns02-cls.cls.osn.
+cls.osn.                NS      SITE-dns03-cls.cls.osn.
+;
+; mail servers (not yet implemented)
+;                        MX   10 smtp1                ; primary mail exchanger
+;                        MX   20 smtp2                ; secondary mail exchanger
+;
+localhost               A       127.0.0.1
+;
+; OSN Ceph Node Interfaces
+;---------------------------
+SITE-dat01-cls         A       172.16.1.1
+SITE-dat02-cls         A       172.16.1.2
+SITE-dat03-cls         A       172.16.1.3
+SITE-dat04-cls         A       172.16.1.4
+SITE-dat05-cls         A       172.16.1.5
+SITE-mon01-cls         A       172.16.1.11
+SITE-mon02-cls         A       172.16.1.12
+SITE-mon03-cls         A       172.16.1.13
+;
+SITE-svc01-cls         A       172.16.1.21
+SITE-dns01-cls         A       172.16.1.21
+SITE-dhc01-cls         CNAME   SITE-svc01-cls
+SITE-tft01-cls         CNAME   SITE-svc01-cls
+;
+SITE-svc02-cls         A       172.16.1.22
+SITE-dns02-cls         A       172.16.1.21
+SITE-dhc02-cls         CNAME   SITE-svc02-cls
+SITE-tft02-cls         CNAME   SITE-svc02-cls
+;
+SITE-svc03-cls         A       172.16.1.23
+SITE-dns03-cls         A       172.16.1.21
+SITE-dhc03-cls         CNAME   SITE-svc03-cls
+SITE-tft03-cls         CNAME   SITE-svc03-cls

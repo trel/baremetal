@@ -1,0 +1,28 @@
+$TTL 3D
+$ORIGIN 1.16.172.IN-ADDR.ARPA.
+@       IN      SOA     dns01.cls.osn.  hostmaster.openstoragenetwork.org. (
+                        2019052801      ; serial format: yyyymmddrr
+                                        ; where rr = today's revision#
+                        8H              ; refresh, seconds
+                        2H              ; retry, seconds
+                        4W              ; expire, seconds
+                        1D )            ; minimum, seconds
+;
+; name servers
+        IN      NS      SITE-dns01-cls.cls.osn.
+        IN      NS      SITE-dns02-cls.cls.osn.
+        IN      NS      SITE-dns03-cls.cls.osn.
+;
+1       IN      PTR     SITE-dat01-cls.cls.osn.
+2       IN      PTR     SITE-dat02-cls.cls.osn.
+3       IN      PTR     SITE-dat03-cls.cls.osn.
+4       IN      PTR     SITE-dat04-cls.cls.osn.
+5       IN      PTR     SITE-dat05-cls.cls.osn.
+;
+11      IN      PTR     SITE-mon01-cls.cls.osn.
+12      IN      PTR     SITE-mon02-cls.cls.osn.
+13      IN      PTR     SITE-mon03-cls.cls.osn.
+;
+21      IN      PTR     SITE-svc01-cls.cls.osn
+22      IN      PTR     SITE-svc02-cls.cls.osn
+23      IN      PTR     SITE-svc03-cls.cls.osn
