@@ -25,30 +25,34 @@ localhost               A       127.0.0.1
 ;
 ; OSN Ceph Node Interfaces
 ;---------------------------
-SITE-dat01-mgt         A       172.16.2.1
-SITE-dat02-mgt         A       172.16.2.2
-SITE-dat03-mgt         A       172.16.2.3
-SITE-dat04-mgt         A       172.16.2.4
-SITE-dat05-mgt         A       172.16.2.5
-SITE-mon01-mgt         A       172.16.2.11
-SITE-mon02-mgt         A       172.16.2.12
-SITE-mon03-mgt         A       172.16.2.13
+SITE-dat01-mgt         A       172.16.3.101
+SITE-dat02-mgt         A       172.16.3.102
+SITE-dat03-mgt         A       172.16.3.103
+SITE-dat04-mgt         A       172.16.3.104
+SITE-dat05-mgt         A       172.16.3.105
+SITE-mon01-mgt         A       172.16.3.11
+SITE-mon02-mgt         A       172.16.3.12
+SITE-mon03-mgt         A       172.16.3.13
 ;
-SITE-svc01-mgt         A       172.16.2.21
-SITE-dns01-mgt         A       172.16.2.21
+SITE-svc01-mgt         A       172.16.3.21
+SITE-dns01-mgt         A       172.16.3.21
 SITE-dhc01-mgt         CNAME   SITE-svc01-mgt
+SITE-ntp01-mgt         CNAME   SITE-svc01-mgt
+
 ;
-SITE-svc02-mgt         A       172.16.2.22
-SITE-dns02-mgt         A       172.16.2.22
+SITE-svc02-mgt         A       172.16.3.22
+SITE-dns02-mgt         A       172.16.3.22
 SITE-dhc02-mgt         CNAME   SITE-svc02-mgt
+SITE-ntp02-mgt         CNAME   SITE-svc02-mgt
 ;
-SITE-svc03-mgt         A       172.16.2.23
-SITE-dns03-mgt         A       172.16.2.23
+SITE-svc03-mgt         A       172.16.3.23
+SITE-dns03-mgt         A       172.16.3.23
 SITE-dhc03-mgt         CNAME   SITE-svc03-mgt
+SITE-ntp03-mgt         CNAME   SITE-svc03-mgt
 ;
 ; Device Interfaces
 ;---------------------------
-SITE-mlx01-mgt        A       172.16.2.31
-SITE-kvm01-mgt        A       172.16.2.41
-SITE-pdu01-mgt        A       172.16.2.51
-SITE-pdu02-mgt        A       172.16.2.52
+SITE-mlx01-mgt        A       172.16.3.31
+SITE-kvm01-mgt        A       172.16.3.41
+SITE-pdu01-mgt        A       172.16.3.51
+SITE-pdu02-mgt        A       172.16.3.52
