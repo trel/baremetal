@@ -1,20 +1,52 @@
 version: '3'
 services:
-  svc:
-    image: svc:latest
+  bind:
+    image: bind:latest
     cap_add:
       - NET_ADMIN
     networks:
       cluster:
         ipv4_address:
-          172.16.1.21
+          172.16.2.21
       management:
         ipv4_address:
-          172.16.2.21
+          172.16.3.21
     entrypoint: /scripts/entrypoint.sh
     build:
       context: ..
-      dockerfile: docker/svc/Dockerfile
+      dockerfile: docker/bind/Dockerfile
+
+  dhcp2:
+    image: dhcp:latest
+    cap_add:
+      - NET_ADMIN
+    networks:
+      cluster:
+        ipv4_address:
+          172.16.2.22
+      management:
+        ipv4_address:
+          172.16.3.22
+    entrypoint: /scripts/entrypoint.sh
+    build:
+      context: ..
+      dockerfile: docker/dhcp/Dockerfile
+
+  dhcp3:
+    image: dhcp:latest
+    cap_add:
+      - NET_ADMIN
+    networks:
+      cluster:
+        ipv4_address:
+          172.16.2.23
+      management:
+        ipv4_address:
+          172.16.3.23
+    entrypoint: /scripts/entrypoint.sh
+    build:
+      context: ..
+      dockerfile: docker/dhcp/Dockerfile
 
   client_clusternet:
     image: client_clusternet:latest
@@ -41,9 +73,9 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.1.0/24
+        - subnet: 172.16.2.0/24
   management:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.2.0/24
+        - subnet: 172.16.3.0/24

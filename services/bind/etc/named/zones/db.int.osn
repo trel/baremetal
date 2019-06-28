@@ -1,0 +1,53 @@
+;
+; /var/named/zones/adm/db.int.osn
+; DNS zone map for the OSN cluster network
+;
+$TTL 3D
+$ORIGIN int.osn.
+@       IN      SOA     dns01.int.osn.  hostmaster.openstoragenetwork.org. (
+                        2019052801      ; serial format: yyyymmddrr
+                                        ; where rr = today's revision#
+                        8H              ; refresh, seconds
+                        2H              ; retry, seconds
+                        4W              ; expire, seconds
+                        1D )            ; minimum, seconds
+;
+; name servers
+int.osn.                NS      SITE-dns01-int.int.osn.
+int.osn.                NS      SITE-dns02-int.int.osn.
+int.osn.                NS      SITE-dns03-int.int.osn.
+;
+; mail servers (not yet implemented)
+;                        MX   10 smtp1                ; primary mail exchanger
+;                        MX   20 smtp2                ; secondary mail exchanger
+;
+localhost               A       127.0.0.1
+;
+; OSN Ceph Node Interfaces
+;---------------------------
+SITE-dat01-int         A       172.16.2.101
+SITE-dat02-int         A       172.16.2.102
+SITE-dat03-int         A       172.16.2.103
+SITE-dat04-int         A       172.16.2.104
+SITE-dat05-int         A       172.16.2.105
+SITE-mon01-int         A       172.16.2.11
+SITE-mon02-int         A       172.16.2.12
+SITE-mon03-int         A       172.16.2.13
+;
+SITE-mon01-int         A       172.16.2.21
+SITE-dns01-int         A       172.16.2.21
+SITE-dhc01-int         CNAME   SITE-mon01-int
+SITE-tft01-int         CNAME   SITE-mon01-int
+SITE-ntp01-int         CNAME   SITE-mon01-int
+;
+SITE-mon02-int         A       172.16.2.22
+SITE-dns02-int         A       172.16.2.22
+SITE-dhc02-int         CNAME   SITE-mon02-int
+SITE-tft02-int         CNAME   SITE-mon02-int
+SITE-ntp02-int         CNAME   SITE-mon02-int
+;
+SITE-mon03-int         A       172.16.2.23
+SITE-dns03-int         A       172.16.2.23
+SITE-dhc03-int         CNAME   SITE-mon03-int
+SITE-tft03-int         CNAME   SITE-mon03-int
+SITE-ntp03-int         CNAME   SITE-mon03-int
