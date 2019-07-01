@@ -3,7 +3,12 @@ import re
 import argparse
 from os.path import basename
 
-parser = argparse.ArgumentParser(description='Create site specific dhcp files from templates')
+# Locally administered default for 
+# filling missing macs
+DEFAULT_MAC = "fa:65:5f:71:a9:fd"
+
+parser = argparse.ArgumentParser(description='Create site specific dhcp '
+                                             'files from templates')
 
 parser.add_argument('-p', '--prefix', default='',
                     help='prefix to append to output files')
@@ -20,6 +25,10 @@ parser.add_argument("templates", nargs="+",
 
 parser.add_argument("site",
                     help="site to generate dhcp information for")
+
+parser.add_argument("-i", "--ignore",
+                    action='store_true',
+                    help="ignore missing macs and use dummy address")
 
 args = parser.parse_args()
 
@@ -46,7 +55,13 @@ for tmpl in args.templates:
             if m:
                 node = m.group(1)
                 interface = m.group(2)
-                mac = mac_dict[args.site][node][interface]
+                try:
+                    mac = mac_dict[args.site][node][interface]
+                except KeyError as e:
+                    if args.ignore:
+                        mac = DEFAULT_MAC
+                    else:
+                        raise e
                 l = re.sub(interface, mac, l)
                 l = re.sub(r'SITE', args.site, l)
             conf_file.write(l)

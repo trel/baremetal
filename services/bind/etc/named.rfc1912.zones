@@ -40,9 +40,9 @@ zone "0.in-addr.arpa" IN {
 	allow-update { none; };
 };
 
-zone "cls.osn" IN {
+zone "ext.osn" IN {
 	type master;
-	file "/etc/named/zones/db.cls.osn";
+	file "/etc/named/zones/db.ext.osn";
 };
 
 zone "mgt.osn" IN {
@@ -50,12 +50,12 @@ zone "mgt.osn" IN {
         file "/etc/named/zones/db.mgt.osn";
 };
 
-zone "1.16.172.in-addr.arpa" {
-    type master;
-    file "/etc/named/zones/db.1.16.172";  # 172.16.1.0/24 subnet
-};
-
 zone "2.16.172.in-addr.arpa" {
     type master;
-    file "/etc/named/zones/db.2.16.172";  # 172.16.2.0/24 subnet
+    file "/etc/named/zones/db.172.16.2.reverse";  # 172.16.2.0/24 subnet
+};
+
+zone "4.16.174.in-addr.arpa" {
+    type master;
+    file "/etc/named/zones/db.172.16.4.reverse";  # 172.16.4.0/24 subnet
 };

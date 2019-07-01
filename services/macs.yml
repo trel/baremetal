@@ -47,13 +47,21 @@ mghp:
     em2: "AC:1F:6B:74:CA:37"
     p5p1: "98:03:9B:8C:6B:4A"
     p6p1: "98:03:9B:8C:68:B6" 
+  mlx01:
+    bmc: "98:03:9B:B9:99:AA"
+  kvm01:
+    bmc: "00:0d:5d:15:10:4b"
+  pdu01:
+    bmc: "00:0A:9C:60:B5:B8"
+  pdu02:
+    bmc: "00:0A:9C:60:DC:0B"
 jhux:
   mon03:
     bmc: "AC:1F:6B:B8:3B:08"
     em1: "AC:1F:6B:BB:30:5A"
     em2: "AC:1F:6B:BB:30:5B"
     p1p1: "B8:59:9F:06:37:20"
-    p3p1: " B8:59:9F:06:37:2C"
+    p3p1: "B8:59:9F:06:37:2C"
   mon02:
     bmc: "AC:1F:6B:B8:3C:F2"
     em1: "AC:1F:6B:BB:34:2E"

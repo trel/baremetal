@@ -1,0 +1,33 @@
+$TTL 3D
+$ORIGIN 4.16.172.IN-ADDR.ARPA.
+@       IN      SOA     dns01.mgt.osn.  hostmaster.openstoragenetwork.org. (
+                        2019052801      ; serial format: yyyymmddrr
+                                        ; where rr = today's revision#
+                        8H              ; refresh, seconds
+                        2H              ; retry, seconds
+                        4W              ; expire, seconds
+                        1D )            ; minimum, seconds
+;
+; name servers
+        IN      NS      SITE-dns01-mgt.mgt.osn.
+        IN      NS      SITE-dns02-mgt.mgt.osn.
+        IN      NS      SITE-dns03-mgt.mgt.osn.
+;
+101     IN      PTR     SITE-dat01-mgt.mgt.osn.
+102     IN      PTR     SITE-dat02-mgt.mgt.osn.
+103     IN      PTR     SITE-dat03-mgt.mgt.osn.
+104     IN      PTR     SITE-dat04-mgt.mgt.osn.
+105     IN      PTR     SITE-dat05-mgt.mgt.osn.
+;
+11      IN      PTR     SITE-mon01-mgt.mgt.osn.
+12      IN      PTR     SITE-mon02-mgt.mgt.osn.
+13      IN      PTR     SITE-mon03-mgt.mgt.osn.
+;
+21      IN      PTR     SITE-svc01-mgt.mgt.osn
+22      IN      PTR     SITE-svc02-mgt.mgt.osn
+23      IN      PTR     SITE-svc03-mgt.mgt.osn
+;
+31      IN      PTR     SITE-mlx01-mgt.mgt.osn
+41      IN      PTR     SITE-kvm01-mgt.mgt.osn
+51      IN      PTR     SITE-pdu01-mgt.mgt.osn
+52      IN      PTR     SITE-pdu02-mgt.mgt.osn
