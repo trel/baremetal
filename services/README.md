@@ -41,3 +41,7 @@ also requires pyyaml.
 * makefile - there is a simple makefile that is run to create the configs for all the sites. The "all" target will
 make the configs for all sites
 
+**OTHER**
+The docker directory contains a container setup that supports testing bind and dhcpd without hardware.
+
+
