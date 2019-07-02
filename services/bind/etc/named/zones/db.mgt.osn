@@ -30,22 +30,19 @@ SITE-dat02-mgt         A       172.16.4.102
 SITE-dat03-mgt         A       172.16.4.103
 SITE-dat04-mgt         A       172.16.4.104
 SITE-dat05-mgt         A       172.16.4.105
-SITE-mon01-mgt         A       172.16.4.11
-SITE-mon02-mgt         A       172.16.4.12
-SITE-mon03-mgt         A       172.16.4.13
 ;
-SITE-svc01-mgt         A       172.16.4.21
+SITE-mon01-mgt         A       172.16.4.21
 SITE-dns01-mgt         A       172.16.4.21
 SITE-dhc01-mgt         CNAME   SITE-svc01-mgt
 SITE-ntp01-mgt         CNAME   SITE-svc01-mgt
 
 ;
-SITE-svc02-mgt         A       172.16.4.22
+SITE-mon02-mgt         A       172.16.4.22
 SITE-dns02-mgt         A       172.16.4.22
 SITE-dhc02-mgt         CNAME   SITE-svc02-mgt
 SITE-ntp02-mgt         CNAME   SITE-svc02-mgt
 ;
-SITE-svc03-mgt         A       172.16.4.23
+SITE-mon03-mgt         A       172.16.4.23
 SITE-dns03-mgt         A       172.16.4.23
 SITE-dhc03-mgt         CNAME   SITE-svc03-mgt
 SITE-ntp03-mgt         CNAME   SITE-svc03-mgt
