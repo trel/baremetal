@@ -33,19 +33,19 @@ SITE-dat05-mgt         A       172.16.4.105
 ;
 SITE-mon01-mgt         A       172.16.4.21
 SITE-dns01-mgt         A       172.16.4.21
-SITE-dhc01-mgt         CNAME   SITE-svc01-mgt
-SITE-ntp01-mgt         CNAME   SITE-svc01-mgt
+SITE-dhc01-mgt         CNAME   SITE-mon01-mgt
+SITE-ntp01-mgt         CNAME   SITE-mon01-mgt
 
 ;
 SITE-mon02-mgt         A       172.16.4.22
 SITE-dns02-mgt         A       172.16.4.22
-SITE-dhc02-mgt         CNAME   SITE-svc02-mgt
-SITE-ntp02-mgt         CNAME   SITE-svc02-mgt
+SITE-dhc02-mgt         CNAME   SITE-mon02-mgt
+SITE-ntp02-mgt         CNAME   SITE-mon02-mgt
 ;
 SITE-mon03-mgt         A       172.16.4.23
 SITE-dns03-mgt         A       172.16.4.23
-SITE-dhc03-mgt         CNAME   SITE-svc03-mgt
-SITE-ntp03-mgt         CNAME   SITE-svc03-mgt
+SITE-dhc03-mgt         CNAME   SITE-mon03-mgt
+SITE-ntp03-mgt         CNAME   SITE-mon03-mgt
 ;
 ; Device Interfaces
 ;---------------------------
