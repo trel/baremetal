@@ -1,5 +1,5 @@
 $TTL 3D
-$ORIGIN 4.16.172.IN-ADDR.ARPA.
+$ORIGIN 3.16.172.IN-ADDR.ARPA.
 @       IN      SOA     dns01.mgt.osn.  hostmaster.openstoragenetwork.org. (
                         2019052801      ; serial format: yyyymmddrr
                                         ; where rr = today's revision#

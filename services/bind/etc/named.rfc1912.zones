@@ -55,7 +55,7 @@ zone "2.16.172.in-addr.arpa" {
     file "/etc/named/zones/db.172.16.2.reverse";  # 172.16.2.0/24 subnet
 };
 
-zone "4.16.172.in-addr.arpa" {
+zone "3.16.172.in-addr.arpa" {
     type master;
-    file "/etc/named/zones/db.172.16.4.reverse";  # 172.16.4.0/24 subnet
+    file "/etc/named/zones/db.172.16.3.reverse";  # 172.16.3.0/24 subnet
 };
