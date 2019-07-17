@@ -42,16 +42,19 @@ SITE-mon03-ext         A       172.16.2.23
 ;---------------------------
 ;
 SITE-dns01-ext         A       172.16.2.21
+SITE-svc01-ext         CNAME   SITE-mon01-ext
 SITE-dhc01-ext         CNAME   SITE-mon01-ext
 SITE-tft01-ext         CNAME   SITE-mon01-ext
 SITE-ntp01-ext         CNAME   SITE-mon01-ext
 ;
 SITE-dns02-ext         A       172.16.2.22
+SITE-svc02-ext         CNAME   SITE-mon02-ext
 SITE-dhc02-ext         CNAME   SITE-mon02-ext
 SITE-tft02-ext         CNAME   SITE-mon02-ext
 SITE-ntp02-ext         CNAME   SITE-mon02-ext
 ;
 SITE-dns03-ext         A       172.16.2.23
+SITE-svc03-ext         CNAME   SITE-mon03-ext
 SITE-dhc03-ext         CNAME   SITE-mon03-ext
 SITE-tft03-ext         CNAME   SITE-mon03-ext
 SITE-ntp03-ext         CNAME   SITE-mon03-ext
