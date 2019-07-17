@@ -19,13 +19,13 @@ $ORIGIN 3.16.172.IN-ADDR.ARPA.
 104     IN      PTR     SITE-dat04-mgt.mgt.osn.
 105     IN      PTR     SITE-dat05-mgt.mgt.osn.
 ;
-11      IN      PTR     SITE-mon01-mgt.mgt.osn.
-12      IN      PTR     SITE-mon02-mgt.mgt.osn.
-13      IN      PTR     SITE-mon03-mgt.mgt.osn.
+11      IN      PTR     SITE-svc01-mgt.mgt.osn.
+12      IN      PTR     SITE-svc02-mgt.mgt.osn.
+13      IN      PTR     SITE-svc03-mgt.mgt.osn.
 ;
-21      IN      PTR     SITE-svc01-mgt.mgt.osn
-22      IN      PTR     SITE-svc02-mgt.mgt.osn
-23      IN      PTR     SITE-svc03-mgt.mgt.osn
+21      IN      PTR     SITE-mgt01-mgt.mgt.osn
+22      IN      PTR     SITE-mgt02-mgt.mgt.osn
+23      IN      PTR     SITE-mgt03-mgt.mgt.osn
 ;
 31      IN      PTR     SITE-mlx01-mgt.mgt.osn
 41      IN      PTR     SITE-kvm01-mgt.mgt.osn

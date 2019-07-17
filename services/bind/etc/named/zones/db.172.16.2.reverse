@@ -19,10 +19,6 @@ $ORIGIN 2.16.172.IN-ADDR.ARPA.
 104     IN      PTR     SITE-dat04-ext.ext.osn.
 105     IN      PTR     SITE-dat05-ext.ext.osn.
 ;
-11      IN      PTR     SITE-mon01-ext.ext.osn.
-12      IN      PTR     SITE-mon02-ext.ext.osn.
-13      IN      PTR     SITE-mon03-ext.ext.osn.
-;
 21      IN      PTR     SITE-svc01-ext.ext.osn
 22      IN      PTR     SITE-svc02-ext.ext.osn
 23      IN      PTR     SITE-svc03-ext.ext.osn

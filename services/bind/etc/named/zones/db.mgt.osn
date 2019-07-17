@@ -25,6 +25,8 @@ localhost               A       127.0.0.1
 ;
 ; OSN Ceph Node Interfaces
 ;---------------------------
+; VLAN 3 - BMC Interfaces
+;---------------------------
 SITE-dat01-mgt         A       172.16.3.101
 SITE-dat02-mgt         A       172.16.3.102
 SITE-dat03-mgt         A       172.16.3.103
@@ -32,27 +34,35 @@ SITE-dat04-mgt         A       172.16.3.104
 SITE-dat05-mgt         A       172.16.3.105
 ;
 SITE-mon01-mgt         A       172.16.3.21
-SITE-dns01-mgt         A       172.16.3.21
-SITE-dhc01-mgt         CNAME   SITE-mon01-mgt
-SITE-tft01-mgt         CNAME   SITE-mon01-mgt
-SITE-ntp01-mgt         CNAME   SITE-mon01-mgt
-
-;
 SITE-mon02-mgt         A       172.16.3.22
-SITE-dns02-mgt         A       172.16.3.22
-SITE-dhc02-mgt         CNAME   SITE-mon02-mgt
-SITE-tft02-mgt         CNAME   SITE-mon02-mgt
-SITE-ntp02-mgt         CNAME   SITE-mon02-mgt
-;
 SITE-mon03-mgt         A       172.16.3.23
-SITE-dns03-mgt         A       172.16.3.23
-SITE-dhc03-mgt         CNAME   SITE-mon03-mgt
-SITE-tft03-mgt         CNAME   SITE-mon03-mgt
-SITE-ntp03-mgt         CNAME   SITE-mon03-mgt
-;
-; Device Interfaces
+;---------------------------
+; VLAN 3 - EM1 Interfaces
+;---------------------------
+SITE-svc01-mgt         A       172.16.3.11
+SITE-svc02-mgt         A       172.16.3.12
+SITE-svc03-mgt         A       172.16.3.13
+;---------------------------
+; VLAN 3 - Device Interfaces
 ;---------------------------
 SITE-mlx01-mgt        A       172.16.3.31
 SITE-kvm01-mgt        A       172.16.3.41
 SITE-pdu01-mgt        A       172.16.3.51
 SITE-pdu02-mgt        A       172.16.3.52
+;---------------------------
+; CNAMES and DNS
+;---------------------------
+SITE-dns01-mgt         A       172.16.3.11
+SITE-dhc01-mgt         CNAME   SITE-svc01-mgt
+SITE-tft01-mgt         CNAME   SITE-svc01-mgt
+SITE-ntp01-mgt         CNAME   SITE-svc01-mgt
+
+SITE-dns02-mgt         A       172.16.3.12
+SITE-dhc02-mgt         CNAME   SITE-svc02-mgt
+SITE-tft02-mgt         CNAME   SITE-svc02-mgt
+SITE-ntp02-mgt         CNAME   SITE-svc02-mgt
+
+SITE-dns03-mgt         A       172.16.3.13
+SITE-dhc03-mgt         CNAME   SITE-svc03-mgt
+SITE-tft03-mgt         CNAME   SITE-svc03-mgt
+SITE-ntp03-mgt         CNAME   SITE-svc03-mgt
