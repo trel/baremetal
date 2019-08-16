@@ -2,6 +2,21 @@
 ## Running-config temporary prefix mode setting
 ##
 no cli default prefix-modes enable
+no web http enable
+no web https enable
+no web proxy
+no web enable
+no xml-gw enable
+no json-gw enable
+ssh server min-version 2
+ssh server security strict
+ssh server listen interface mgmt0
+no ssh server x11-forwarding enable
+no ssh server tcp-forwarding enable
+no snmp-server enable communities
+username xmladmin disable
+username monitor disable
+username xmluser disable
   
 ##
 ## Interface Split configuration
@@ -48,29 +63,17 @@ no cli default prefix-modes enable
    interface ethernet 1/13/1-1/13/2 mtu 9216 force
    interface ethernet 1/14/1-1/14/2 mtu 9216 force
 
-   interface ethernet 1/1/1-1/1/2 switchport mode trunk
-   interface ethernet 1/2/1-1/2/2 switchport mode trunk
-   interface ethernet 1/3/1-1/3/2 switchport mode trunk
-   interface ethernet 1/4/1-1/4/2 switchport mode trunk
-   interface ethernet 1/5/1-1/5/2 switchport mode trunk
-
-   interface ethernet 1/12/1-1/12/2 switchport mode trunk
-   interface ethernet 1/13/1-1/13/2 switchport mode trunk
-   interface ethernet 1/14/1-1/13/2 switchport mode trunk
-   
+  
 ##
 ## VLAN configuration
 ##
+   
+# Cluster External VLAN
    vlan 2
-   interface ethernet 1/1/1 switchport trunk allowed-vlan none
-   interface ethernet 1/2/1 switchport trunk allowed-vlan none
-   interface ethernet 1/3/1 switchport trunk allowed-vlan none
-   interface ethernet 1/4/1 switchport trunk allowed-vlan none
-   interface ethernet 1/5/1 switchport trunk allowed-vlan none
 
-   interface ethernet 1/12/1 switchport trunk allowed-vlan none
-   interface ethernet 1/13/1 switchport trunk allowed-vlan none
-   interface ethernet 1/14/1 switchport trunk allowed-vlan none
+   interface ethernet 1/12/2 switchport access vlan 2
+   interface ethernet 1/13/2 switchport access vlan 2
+   interface ethernet 1/14/2 switchport access vlan 2
 
    interface ethernet 1/1/2 switchport access vlan 2
    interface ethernet 1/2/2 switchport access vlan 2
@@ -78,9 +81,19 @@ no cli default prefix-modes enable
    interface ethernet 1/4/2 switchport access vlan 2
    interface ethernet 1/5/2 switchport access vlan 2
 
-   interface ethernet 1/12/2 switchport access vlan 2
-   interface ethernet 1/13/2 switchport access vlan 2
-   interface ethernet 1/14/2 switchport access vlan 2
+# DMZ VLAN
+   vlan 5
+
+   interface ethernet 1/12/1 switchport access vlan 5
+   interface ethernet 1/13/1 switchport access vlan 5
+   interface ethernet 1/14/1 switchport access vlan 5
+
+# UNASSIGNED
+   interface ethernet 1/1/1 switchport trunk allowed-vlan none
+   interface ethernet 1/2/1 switchport trunk allowed-vlan none
+   interface ethernet 1/3/1 switchport trunk allowed-vlan none
+   interface ethernet 1/4/1 switchport trunk allowed-vlan none
+   interface ethernet 1/5/1 switchport trunk allowed-vlan none
 
 ## UPLINK SECTION
    
@@ -95,8 +108,7 @@ no cli default prefix-modes enable
    ip routing vrf default
    ip route vrf default 0.0.0.0/0 10.8.15.1
 
-   # DMZ VLAN
-   vlan 5
+
    interface vlan 5
    interface vlan 5 ip address 192.69.103.241/28 primary
 
