@@ -21,7 +21,7 @@
       * Use mon02 as gw (see next section)
     * Configure OOB access - mon02 is oob gw w/NAT
       * use previous mac detection to ID the site
-      * include map of 5 IPs in ks - 1 mon02 oob IP x 5 sites
+      * include map of 10 IPs in ks - (1 mon02 oob IP + 1 mon02 gw IP) x 5 sites
       * Use the site ID to assign oob addresses to eno2 interface
       * configure mon02 node as NAT
 
@@ -30,7 +30,7 @@
 
 * *Initial config (after install)*
   * connect to newly built mon2 via oob interface and run "bootstrap" ansible scripts
-  * security.yml - runs as root user w/password
+  * bootstrap.yml - runs as root user w/password
     * sets up ansible user and key
     * disables password ssh login
     * disables root login
@@ -39,7 +39,7 @@
     * configure networking on all the nodes
     * Configure BMC as well
     * yum update all machines from centos mirror
-  * Mellanox.yml
+  * Mellanox.yml (TBD)
     * Configure mellanox pod-local networking
     * Uplink configuration will be manual and site specific
     * This step may be manual
