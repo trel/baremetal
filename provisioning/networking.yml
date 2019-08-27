@@ -67,7 +67,6 @@
           ifname: "{{ item.iface }}"
           state: present
         loop:
-          - {iface: "{{ oob_iface }}", iface_ip4: "{{ oob_iface_ip4 }}/28"}
           - {iface: "{{ cls_iface }}", iface_ip4: "{{ cls_iface_ip4 }}/24"}
           - {iface: "{{ dmz_iface }}", iface_ip4: "{{ dmz_iface_ip4 }}/28"}
         notify:
@@ -77,16 +76,15 @@
         shell:
           nmcli con mod "System {{ item }}" ipv4.method manual
         loop:
-          - "{{ oob_iface }}"
           - "{{ cls_iface }}"
           - "{{ dmz_iface }}"
 
       - name: put external interfaces in dmz
         shell:
-          nmcli con mod "System {{ item }}" connection.zone dmz
+          nmcli con mod "{{ item }}" connection.zone dmz
         loop:
           - "{{ oob_iface }}"
-          - "{{ dmz_iface }}"
+          - "System {{ dmz_iface }}"
 
       - name: trust internal interfaces
         shell:
@@ -146,10 +144,10 @@
   
     - name: trust internal interfaces
       shell: 
-        nmcli con mod "System {{ item }}" connection.zone trusted
+        nmcli con mod "{{ item }}" connection.zone trusted
       loop:
         - "{{ sys_iface }}"
-        - "{{ cls_iface }}"
+        - "System {{ cls_iface }}"
 
     - name: cleanup /dev/sda for ceph install
       shell: |
