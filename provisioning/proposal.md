@@ -30,6 +30,8 @@
 
 * *Initial config (after install)*
   * connect to newly built mon2 via oob interface and run "bootstrap" ansible scripts
+    * Note that this assumes that you use mon02 as the bastion host and that you execute ansible scripts jumping through that host. If you're new to this, I found this article helpful for setup:
+      * https://blog.scottlowe.org/2015/12/24/running-ansible-through-ssh-bastion-host/
   * bootstrap.yml - runs as root user w/password
     * sets up ansible user and key
     * disables password ssh login
