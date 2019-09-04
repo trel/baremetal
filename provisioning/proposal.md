@@ -24,6 +24,14 @@
       * include map of 10 IPs in ks - (1 mon02 oob IP + 1 mon02 gw IP) x 5 sites
       * Use the site ID to assign oob addresses to eno2 interface
       * configure mon02 node as NAT
+    * Provision ansible user
+      * Create ansible user
+      * Install temporary public key
+      * Add ansible to sudoers
+      * SSH
+        * Disable root login
+        * Disable password login
+        * UseDNS = no
 
 * *Install from stick*
   * doit
@@ -32,11 +40,7 @@
   * connect to newly built mon2 via oob interface and run "bootstrap" ansible scripts
     * Note that this assumes that you use mon02 as the bastion host and that you execute ansible scripts jumping through that host. If you're new to this, I found this article helpful for setup:
       * https://blog.scottlowe.org/2015/12/24/running-ansible-through-ssh-bastion-host/
-  * bootstrap.yml - runs as root user w/password
-    * sets up ansible user and key
-    * disables password ssh login
-    * disables root login
-    * constrain source paths?
+  * bootstrap.yml - This playbook simply replaces the temporary ssh key with a permanent one (That you need to specify in the script)
   * networking.yml - runs as ansible user
     * configure networking on all the nodes
     * Configure BMC as well
