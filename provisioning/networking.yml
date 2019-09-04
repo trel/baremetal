@@ -96,7 +96,7 @@
       - name: table entry
         lineinfile:
           path: /etc/iproute2/rt_tables
-          line: 200	dmz
+          line: 200 dmz
 
       - name: create dmz route table
         lineinfile:
