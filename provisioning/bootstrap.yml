@@ -1,48 +1,15 @@
 - hosts: all
   vars:
-    ansible_user: root
-    ansible_password: badpassword
+    ansible_user: ansible
   tasks:
-    - name: Make sure we have a 'wheel' group
-      group:
-        name: wheel
-        state: present
-
-    - name: Allow 'wheel' group to have passwordless sudo
-      lineinfile:
-        dest: /etc/sudoers
-        state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
-
-    - name: Add ansible to wheel group
-      user: name=ansible groups=wheel append=yes state=present createhome=yes
 
     - name: Set up authorized keys for the ansible user
-      authorized_key: user=ansible key="{{item}}"
+      authorized_key: 
+        user: ansible
+        key: "{{item}}" 
+        exclusive: True
       with_file:
-        - /home/jculbert/.ssh/mghpcc_osn_id_rsa.pub
-
-    - name: Disable Password Authentication
-      lineinfile:
-        dest: /etc/ssh/sshd_config
-        regexp: '^PasswordAuthentication'
-        line: "PasswordAuthentication no"
-        state: present
-        backup: yes
-      notify:
-        - restart ssh
- 
-    - name: Disable Root Login
-      lineinfile:
-        dest: /etc/ssh/sshd_config
-        regexp: '^PermitRootLogin'
-        line: "PermitRootLogin no"
-        state: present
-        backup: yes
-      notify:
-        - restart ssh
+        - /Users/culbertj/.ssh/mghpcc_osn_id_rsa.pub
 
   handlers:
   - name: restart ssh
