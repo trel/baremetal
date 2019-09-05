@@ -1,10 +1,16 @@
 This directory contains scripts to bootstrap a pod with a minimal config the main files are:
 
-* **ks.cfg** - this minimal kickstart boots the node and detects and configures the mgt interface (eno1) via a table of macs. It also enables the OOB interface on mon02.
+* **ks.cfg** - this minimal kickstart:
+  * boots the node
+  * detects and configures the mgt interface (eno1) via a table of macs
+  * enables the OOB interface on mon02
+  * provisionions the ansible user w/temporary key
+  * configures sshd
+    * Disable root login
+    * Disallow password login
+    * Set UseDNS=no
 
-* **bootstrap.yml**: an ansible script to install the ansible user/key add her to wheel and config wheel for sudo. It also configures ssh:
-  * disable root access
-  * disallow password login
+* **bootstrap.yml**: This script replaces the temporarly public key for the ansible user with a permanent one.
 
 * **network.yml** - sets up networking and routing:
   * default networking on the mgt interface proxies through mon02
@@ -13,6 +19,34 @@ This directory contains scripts to bootstrap a pod with a minimal config the mai
 * **hosts.yml** - basic ansible host config to support network.yml playbook.
 
 * **Notes**:
+  * *Ansible through a bastion host*
+    * The pod will be configured using mon02 as a bastion host to provision the machines in the pod. To do this you need to:
+      * Add settings to your ansible.cfg file. The relavant settings are:
+      ```
+      [ssh_connection]
+      ssh_args = -C -o ControlMaster=auto -o ControlPersist=60s
+      control_path_dir = ~/.ansible/cp
+      control_path = %(directory)s/%%h-%%r
+      ```
+      * Create a ~/.ssh/config file that implements the proxy e.g.:
+      ```
+      Host 172.16.3.*
+        ProxyCommand ssh -W %h:%p mghpcc-osn-mon02
+        IdentityFile ~/.ssh/osn_ansible_id_rsa
+
+      Host mghpcc-osn-mon02
+              HostName 192.69.102.29
+              User ansible
+              IdentityFile ~/.ssh/osn_ansible_id_rsa
+              ControlMaster auto
+              ControlPath ~/.ansible/cp/%%h-%%r
+              ControlPersist 5m
+      ```
+      * Run the ssh agent and add the ansible key to it.
+      ```
+      # eval "$(ssh-agent -s)"
+      # ssh-add ~/.ssh/mghpcc_osn_id_rsa
+      ```
   * There is a temporary task in the networking playbook that cleans up /dev/sda. This is for initial ceph testing where we are just installing on one disk. Repeated installs require the disks be wiped.
   * The /etc/ansible dir for this was pulled from the the ceph-anisble-root repo
   * Build boot disk instructions:
