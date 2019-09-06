@@ -48,7 +48,7 @@
 
     - name: Allow dmz source subnets
       shell:
-        firewall-cmd --zone=dmz --add-rich-rule='rule family="ipv4" source address="{{ item }}" port port=8080 protocol="tcp" accept' 
+        firewall-cmd --permanent --zone=dmz --add-rich-rule='rule family="ipv4" source address="{{ item }}" port port=8080 protocol="tcp" accept' 
       loop:
         - "18.0.0.0/8"
         - "192.69.102.0/23"
@@ -151,7 +151,7 @@
 
     - name: cleanup /dev/sda for ceph install
       shell: |
-        wipefs -a /dev/sda
+        wipefs -a -f /dev/sda
         touch /tmp/wiped
       args:
         creates: /tmp/wiped
