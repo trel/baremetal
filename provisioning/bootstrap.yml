@@ -9,7 +9,7 @@
         key: "{{item}}" 
         exclusive: True
       with_file:
-        - /Users/culbertj/.ssh/mghpcc_osn_id_rsa.pub
+        - {{ ansible_user_key }}
 
   handlers:
   - name: restart ssh

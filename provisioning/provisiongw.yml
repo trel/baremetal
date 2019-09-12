@@ -1,0 +1,121 @@
+- hosts: gateway
+  vars_prompt:
+    - name: pxe_everyone
+      prompt: "PXE all servers (y|N)?"
+      private: no
+      default: "N"
+
+  vars:
+    ansible_user: ansible
+    www_root_dir: "/var/www/html/centos7"
+    tftp_root_dir: "/var/lib/tftpboot"
+    repo_dir: "/home/ansible/repo/baremetal/provisioning"
+    iso_dir: "/mnt/bootiso"
+  become: yes
+
+  tasks:
+    - name: Set up authorized keys for the ansible user
+      authorized_key: 
+        user: ansible
+        key: "{{item}}" 
+        exclusive: True
+      with_file:
+        - "{{ ansible_user_key }}"
+
+    - name: trust mgmt network
+      shell: |
+        firewall-cmd --zone=trusted --change-interface={{ sys_iface }}
+      notify:
+        - reload fw
+
+    - name: install tools
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - ipmitool
+          - dnsmasq
+          - httpd
+          - syslinux
+
+    - name: create directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "{{ www_root_dir }}"
+        - "{{ tftp_root_dir }}"
+        - "{{ tftp_root_dir }}/centos7"
+        - "{{ tftp_root_dir }}/pxelinux.cfg"
+        - "{{ iso_dir }}"
+        - "/home/ansible/utilities/IPMICFG"
+
+    - name: configure dnsmasq
+      copy:
+        src: "{{ repo_dir }}/dnsmasq.conf"
+        dest: /etc/dnsmasq.conf
+        backup: yes
+
+    - name: mount iso content
+      mount:
+        path: "{{ iso_dir }}"
+        src: LABEL=CentOS 7 x86_64
+        fstype: iso9660
+        state: mounted
+
+    - name: copy iso content, put ks in top-level
+      shell: |
+        cp -r {{ iso_dir }}/* {{ www_root_dir }}
+        cp {{ www_root_dir }}/isolinux/ks.cfg {{ www_root_dir }}/ks.cfg 
+        chmod -R 755 {{ www_root_dir }}
+
+    - name: copy bootloaders, kernel, initrd
+      shell: |
+        cp -r /usr/share/syslinux/* {{ tftp_root_dir }}
+        cp {{ iso_dir }}/images/pxeboot/vmlinuz {{ tftp_root_dir }}/centos7
+        cp {{ iso_dir }}/images/pxeboot/initrd.img {{ tftp_root_dir }}/centos7
+
+    - name: install boot menu
+      copy:
+        src: "{{ repo_dir }}/default"
+        dest: "{{ tftp_root_dir }}/pxelinux.cfg"
+
+    - name: install rescue mode kickstart
+      copy:
+        src: "{{ repo_dir }}/anaconda-ks.cfg"
+        dest: "{{ www_root_dir }}"
+
+    - name: install ipmicfg utility
+      copy: 
+        src: "/home/ansible/thirdparty/IPMICFG_1.30.0_build.190710/Linux/64bit/"
+        dest: "/home/ansible/utilities/IPMICFG"
+        mode: preserve
+
+    - name: fixup /var/lib/tftpboot selinux context
+      shell: |
+        restorecon -R -v {{ tftp_root_dir }}
+
+    - name: unmount iso content
+      mount:
+        path: "{{ iso_dir }}"
+        state: unmounted
+
+    - name: start services
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - "httpd"
+        - "dnsmasq"
+
+    - name: pxe boot servers
+      shell: |
+        ipmitool -I lanplus -H {{ hostvars[item].bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis bootparam set bootflag force_pxe
+        ipmitool -I lanplus -H {{ hostvars[item].bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis power reset
+      loop: "{{ query('inventory_hostnames', 'all:!gateway') }}"
+      when: pxe_everyone|lower == "y"
+
+  handlers:
+    - name: reload fw
+      shell: firewall-cmd --reload
+

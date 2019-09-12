@@ -1,0 +1,26 @@
+default menu.c32
+prompt 0
+timeout 300
+ONTIMEOUT 1
+
+menu title ########## PXE Boot Menu ##########
+
+label 1
+menu label ^1) PXE boot from mon02
+kernel centos7/vmlinuz
+append  initrd=centos7/initrd.img method=http://172.16.3.12/centos7/ devfs=nomount inst.ks=http://172.16.3.12/centos7/ks.cfg
+
+label 2
+menu label ^2) Install CentOS 7 x64 with http://mirror.centos.org Repo
+kernel centos7/vmlinuz
+append initrd=centos7/initrd.img method=http://mirror.centos.org/centos/7/os/x86_64/ devfs=nomount ip=dhcp
+
+label 3
+menu label ^3) Install Centos 64 RESCUE
+kernel centos7/vmlinuz
+append initrd=centos7/initrd.img method=http://172.16.3.12/centos7/  inst.rescue inst.ks=http://172.16.3.12/centos7/anaconda-ks.cfg devfs=nomount
+
+label 4
+menu label ^4) Boot from local drive
+COM32 chain.c32
+APPEND hd2
