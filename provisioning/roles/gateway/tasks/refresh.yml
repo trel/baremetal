@@ -1,0 +1,40 @@
+
+  - name: Find install drive
+    set_fact:
+      removable_drive: "/dev/{{ item.key }}"
+    loop: "{{ ansible_devices|dict2items }}"
+    when: (item.value.removable == "1") and (removable_drive is not defined)
+    no_log: True
+
+  - name: Get confirmation before disk wipe 
+    pause: 
+      prompt: |
+        This script will erase everything on {{ removable_drive }} on host {{ inventory_hostname }}. 
+        Press return to continue or press Ctrl+c and then "a" to abort.
+
+  - name: pull latest release iso
+    get_url:
+      url: "{{ repository_url }}/releases/download/{{ release_tag }}/{{ iso_asset}}"
+      dest: "/home/ansible/boot.iso"
+      checksum: "md5:{{ checksum }}"
+
+  - debug:
+      msg: "The target is {{ removable_drive }}"
+
+  - name: refresh USB drive
+    shell: |
+      dd bs=4M if=/home/ansible/boot.iso of="{{ removable_drive }}" conv=fdatasync status=none
+
+  - name: install ipmicfg utility
+    copy: 
+      src: "thirdparty/IPMICFG_1.30.0_build.190710/Linux/64bit/"
+      dest: "/home/ansible/utilities/IPMICFG"
+      mode: preserve
+    when: refresh_gw_reboot|lower == "y"
+
+  - name: reboot mon02
+    shell:
+      /home/ansible/utilities/IPMICFG/IPMICFG-Linux.x86_64 -reset 6
+    when: refresh_gw_reboot|lower == "y"
+
+ 

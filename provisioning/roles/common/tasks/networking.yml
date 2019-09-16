@@ -1,0 +1,30 @@
+- name: Make sure firewall is running
+  service:
+    name: firewalld
+    state: started
+
+- name: COMMON - assign static addresses to interfaces
+  nmcli:
+    type: ethernet
+    conn_name: "System {{ cls_iface }}"
+    ip4: "{{ cls_iface_ip4 }}/24"
+    ifname: "{{ cls_iface }}"
+    state: present
+  notify:
+  - restart networking
+
+- name: really make static (bug in nmcli module)
+  shell:
+    nmcli con mod "System {{ cls_iface }}" ipv4.method manual
+
+- name: trust internal interfaces
+  shell: 
+    nmcli con mod "{{ item }}" connection.zone trusted
+  loop:
+    - "{{ sys_iface }}"
+    - "System {{ cls_iface }}"
+
+
+
+
+

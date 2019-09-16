@@ -1,0 +1,24 @@
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: install packages
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - NetworkManager-glib
+      - NetworkManager-dispatcher-routing-rules
+      - nm-connection-editor
+      - libsemanage-python
+      - policycoreutils-python
+
+- name: Common Security
+  import_tasks: security.yml
+
+- name: Common Networking
+  import_tasks: networking.yml
+
+
+

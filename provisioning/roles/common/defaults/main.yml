@@ -1,0 +1,3 @@
+---
+ansible_user: ansible
+ansible_user_key: osn_ansible_id_rsa.pub

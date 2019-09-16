@@ -1,0 +1,78 @@
+---
+- import_tasks: networking.yml
+    
+- name: install tools
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - ipmitool
+      - dnsmasq
+      - httpd
+      - syslinux
+
+- name: create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ www_root_dir }}"
+    - "{{ tftp_root_dir }}"
+    - "{{ tftp_root_dir }}/centos7"
+    - "{{ tftp_root_dir }}/pxelinux.cfg"
+    - "{{ iso_dir }}"
+    - "/home/ansible/utilities/IPMICFG"
+
+- name: configure dnsmasq
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+    backup: yes
+
+- name: mount iso content
+  mount:
+    path: "{{ iso_dir }}"
+    src: LABEL=CentOS 7 x86_64
+    fstype: iso9660
+    state: mounted
+
+- name: copy iso content, put ks in top-level
+  shell: |
+    cp -r {{ iso_dir }}/* {{ www_root_dir }}
+    cp {{ www_root_dir }}/isolinux/ks.cfg {{ www_root_dir }}/ks.cfg 
+    chmod -R 755 {{ www_root_dir }}
+
+- name: copy bootloaders, kernel, initrd
+  shell: |
+    cp -r /usr/share/syslinux/* {{ tftp_root_dir }}
+    cp {{ iso_dir }}/images/pxeboot/vmlinuz {{ tftp_root_dir }}/centos7
+    cp {{ iso_dir }}/images/pxeboot/initrd.img {{ tftp_root_dir }}/centos7
+
+- name: install boot menu
+  copy:
+    src: default
+    dest: "{{ tftp_root_dir }}/pxelinux.cfg"
+
+- name: install rescue mode kickstart
+  copy:
+    src: anaconda-ks.cfg
+    dest: "{{ www_root_dir }}"
+
+- name: fixup /var/lib/tftpboot selinux context
+  shell: |
+    restorecon -R -v {{ tftp_root_dir }}
+
+- name: unmount iso content
+  mount:
+    path: "{{ iso_dir }}"
+    state: unmounted
+
+- name: start services
+  service:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - "httpd"
+    - "dnsmasq"
+
+

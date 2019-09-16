@@ -1,0 +1,49 @@
+- name: ensure nm dispatcher is enabled/running
+  service:
+    name: NetworkManager-dispatcher.service
+    enabled: yes
+    state: started
+
+- name: Assign static addresses to dmz interface
+  nmcli:
+    type: ethernet
+    conn_name: "System {{ dmz_iface }}"
+    ip4: "{{ dmz_iface_ip4 }}/28"
+    ifname: "{{ dmz_iface }}"
+    state: present
+  notify:
+  - restart networking
+
+- name: really make static (bug in nmcli module)
+  shell:
+    nmcli con mod "System {{ dmz_iface }}" ipv4.method manual
+
+- name: Allow dmz source subnets
+  shell:
+    firewall-cmd --permanent --zone=dmz --add-rich-rule='rule family="ipv4" source address="{{ item }}" port port=8080 protocol="tcp" accept' 
+  loop:
+    dmz_allowed_ip4_list
+
+- name: put external interfaces in dmz
+  shell:
+    nmcli con mod "{{ item }}" connection.zone dmz
+  loop:
+    - "{{ oob_iface }}"
+    - "System {{ dmz_iface }}" 
+
+- name: table entry
+  lineinfile:
+    path: /etc/iproute2/rt_tables
+    line: 200 dmz
+
+- name: create dmz route table
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/route-enp179s0
+    line: "default via {{ dmz_gw_ip4 }} table dmz"
+    create: yes
+
+- name: create routing rule
+  lineinfile:
+    path: /etc/sysconfig/network-scripts/rule-enp179s0
+    line: "from {{ dmz_iface_ip4 }} table dmz"
+    create: yes

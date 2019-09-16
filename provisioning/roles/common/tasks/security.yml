@@ -1,0 +1,7 @@
+- name: Set up authorized keys for the ansible user
+  authorized_key: 
+    user: "{{ ansible_user }}"
+    key: "{{item}}" 
+    exclusive: True
+  with_file:
+    - "{{ ansible_user_key }}"

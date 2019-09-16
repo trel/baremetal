@@ -1,0 +1,24 @@
+---
+
+# ****Setup gateway***** #
+
+- hosts: gateway
+  vars:
+    ansible_host: "{{ oob_iface_ip4 }}"
+
+  tasks:
+    - import_role:
+        name: gateway
+        tasks_from: refresh
+      when: refresh_gw|lower == "y"
+
+    - name: Wait for gateway
+      wait_for_connection:
+        delay: 15
+        timeout: 900
+
+    - import_role:
+        name: common
+
+    - import_role:
+        name: gateway

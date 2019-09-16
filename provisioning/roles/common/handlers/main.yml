@@ -1,0 +1,12 @@
+- name: restart ssh
+  service:
+    name: sshd
+    state: restarted
+
+- name: reload fw
+  shell: firewall-cmd --reload
+
+- name: restart networking
+  service:
+    name: network
+    state: restarted

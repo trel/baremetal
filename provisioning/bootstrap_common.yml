@@ -1,0 +1,19 @@
+---
+# ****Gateway is up, PXE the troops***** #
+- hosts: all,!gateway
+  gather_facts: "no"
+  tasks:
+    - name: pxe boot nodes
+      shell: |
+        ipmitool -I lanplus -H {{ bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis bootparam set bootflag force_pxe
+        ipmitool -I lanplus -H {{ bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis power reset
+      delegate_to: "{{ item }}"
+      with_items: "{{ groups['gateway'] }}"
+
+    - name: Wait for reboots to complete
+      wait_for_connection:
+        delay: 15
+        timeout: 900
+
+    - import_role:
+        name: common

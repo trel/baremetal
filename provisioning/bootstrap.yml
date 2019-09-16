@@ -1,19 +1,7 @@
-- hosts: all
-  vars:
-    ansible_user: ansible
-  tasks:
+---
 
-    - name: Set up authorized keys for the ansible user
-      authorized_key: 
-        user: ansible
-        key: "{{item}}" 
-        exclusive: True
-      with_file:
-        - {{ ansible_user_key }}
+- name: Bootstrap the gateway node
+  import_playbook: bootstrap_gw.yml
 
-  handlers:
-  - name: restart ssh
-    service:
-      name: sshd
-      state: restarted
-
+- name: Bootstrap the non-gateway nodes
+  import_playbook: bootstrap_common.yml

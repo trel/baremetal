@@ -1,0 +1,16 @@
+---
+  - name: assign static address to cluster interface
+    nmcli:
+      type: ethernet
+      conn_name: "System {{ cls_iface }}"
+      ip4: "{{ cls_iface_ip4 }}/24"
+      ifname: "{{ cls_iface }}"
+      state: present
+    notify:
+    - restart networking
+
+  - name: really make static (bug in nmcli module)
+    shell:
+      nmcli con mod "System {{ cls_iface }}" ipv4.method manual
+
+

@@ -1,0 +1,9 @@
+---
+- import_tasks: networking.yml
+
+- name: cleanup /dev/sda for ceph install
+  shell: |
+    wipefs -a -f /dev/sda
+    touch /tmp/wiped
+  args:
+    creates: /tmp/wiped    

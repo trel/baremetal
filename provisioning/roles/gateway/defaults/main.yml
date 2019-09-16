@@ -1,0 +1,13 @@
+refresh_gw: "y"
+refresh_gw_reboot: "y"
+#
+www_root_dir: "/var/www/html/centos7"
+tftp_root_dir: "/var/lib/tftpboot"
+repo_dir: "/home/ansible/repo/baremetal/provisioning"
+iso_dir: "/mnt/bootiso"
+#
+repository_url: "https://github.com/OpenStorageNetwork/baremetal"
+release_tag: "osn_centos7_minimal_v1.0.2"
+iso_asset: "20190912_osn_centos7_minimal.iso"
+checksum: "1659403818f230dae48bead3688f36c9"
+#removable_drive: "/dev/sdcxxx"
