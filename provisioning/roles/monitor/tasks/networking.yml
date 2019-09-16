@@ -22,7 +22,7 @@
   shell:
     firewall-cmd --permanent --zone=dmz --add-rich-rule='rule family="ipv4" source address="{{ item }}" port port=8080 protocol="tcp" accept' 
   loop:
-    dmz_allowed_ip4_list
+    "{{ dmz_allowed_ip4_list }}"
 
 - name: put external interfaces in dmz
   shell:

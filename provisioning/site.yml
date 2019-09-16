@@ -3,10 +3,16 @@
 - hosts: monitors
   tasks: 
     - import_role:
+        name: common
+
+    - import_role:
         name: monitor
 
 - hosts: osds
   tasks:
+    - import_role:
+        name: common
+  
     - import_role:
         name: osd
 

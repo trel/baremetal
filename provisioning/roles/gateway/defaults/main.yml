@@ -3,7 +3,6 @@ refresh_gw_reboot: "y"
 #
 www_root_dir: "/var/www/html/centos7"
 tftp_root_dir: "/var/lib/tftpboot"
-repo_dir: "/home/ansible/repo/baremetal/provisioning"
 iso_dir: "/mnt/bootiso"
 #
 repository_url: "https://github.com/OpenStorageNetwork/baremetal"
