@@ -2,6 +2,17 @@ all:
   vars:
     ansible_user: ansible
     ansible_become: yes
+    # BEGIN Site specific variables
+    ansible_user_key: osn_ansible_id_rsa.pub
+    mon01_oob_iface_ip4: "192.69.102.26"
+    mon02_oob_iface_ip4: "192.69.102.29"
+    mon03_oob_iface_ip4: "192.69.102.28"
+    mon_oob_gw_ip4: "192.69.102.1"
+    mon01_dmz_iface_ip4: "192.69.103.246"
+    mon02_dmz_iface_ip4: "192.69.103.247"
+    mon03_dmz_iface_ip4: "192.69.103.248"
+    mon_dmz_gw_ip4: "192.69.103.241"
+    # END Site specific variables
   children:
     monitors:
       hosts:
@@ -10,30 +21,30 @@ all:
           # onboard
           bmc_iface_ip4: 172.16.3.21 # bmc
           svc_iface_ip4: 172.16.3.11 # eno1
-          oob_iface_ip4: 192.69.102.26 # eno2
+          oob_iface_ip4: "{{ mon01_oob_iface_ip4 }}" # eno2
           # mellanox
           cls_iface_ip4: 172.16.2.11 # p3p1, enp23s0
-          dmz_iface_ip4: 192.69.103.246 # p1p1, enp179s0
+          dmz_iface_ip4: "{{ mon01_dmz_iface_ip4 }}" # p1p1, enp179s0
         mon02:
           ansible_host: 172.16.3.12
           bmc_iface_ip4: 172.16.3.22
           svc_iface_ip4: 172.16.3.12
-          oob_iface_ip4: 192.69.102.29
+          oob_iface_ip4: "{{ mon02_oob_iface_ip4 }}" 
           cls_iface_ip4: 172.16.2.12
-          dmz_iface_ip4: 192.69.103.247
+          dmz_iface_ip4: "{{ mon02_dmz_iface_ip4 }}"
         mon03:
           ansible_host: 172.16.3.13
           bmc_iface_ip4: 172.16.3.23
           svc_iface_ip4: 172.16.3.13
-          oob_iface_ip4: 192.69.102.28
+          oob_iface_ip4: "{{ mon03_oob_iface_ip4 }}"
           cls_iface_ip4: 172.16.2.13
-          dmz_iface_ip4: 192.69.103.248
+          dmz_iface_ip4: "{{ mon03_dmz_iface_ip4 }}"
       vars:
         sys_iface: eno1
         oob_iface: eno2
         cls_iface: enp23s0
         dmz_iface: enp179s0
-        dmz_gw_ip4: 192.69.103.241
+        dmz_gw_ip4: "{{ mon_dmz_gw_ip4 }}"
 
     osds:
       hosts:

@@ -1,0 +1,90 @@
+all:
+  vars:
+    ansible_user: ansible
+    ansible_become: yes
+    # BEGIN Site specific variables
+    ansible_user_key: ncsa_osn_id_rsa.pub
+    mon01_oob_iface_ip4: "141.142.142.18"
+    mon02_oob_iface_ip4: "141.142.142.19"
+    mon03_oob_iface_ip4: "141.142.142.20"
+    mon_oob_gw_ip4: "141.142.142.17"
+    mon01_dmz_iface_ip4: "141.142.142.2"
+    mon02_dmz_iface_ip4: "141.142.142.3"
+    mon03_dmz_iface_ip4: "141.142.142.4"
+    mon_dmz_gw_ip4: "141.142.142.1"
+    # END Site specific variables
+  children:
+    monitors:
+      hosts:
+        mon01:
+          ansible_host: 172.16.3.11 # eno1
+          # onboard
+          bmc_iface_ip4: 172.16.3.21 # bmc
+          svc_iface_ip4: 172.16.3.11 # eno1
+          oob_iface_ip4: "{{ mon01_oob_iface_ip4 }}" # eno2
+          # mellanox
+          cls_iface_ip4: 172.16.2.11 # p3p1, enp23s0
+          dmz_iface_ip4: "{{ mon01_dmz_iface_ip4 }}" # p1p1, enp179s0
+        mon02:
+          ansible_host: 172.16.3.12
+          bmc_iface_ip4: 172.16.3.22
+          svc_iface_ip4: 172.16.3.12
+          oob_iface_ip4: "{{ mon02_oob_iface_ip4 }}" 
+          cls_iface_ip4: 172.16.2.12
+          dmz_iface_ip4: "{{ mon02_dmz_iface_ip4 }}"
+        mon03:
+          ansible_host: 172.16.3.13
+          bmc_iface_ip4: 172.16.3.23
+          svc_iface_ip4: 172.16.3.13
+          oob_iface_ip4: "{{ mon03_oob_iface_ip4 }}"
+          cls_iface_ip4: 172.16.2.13
+          dmz_iface_ip4: "{{ mon03_dmz_iface_ip4 }}"
+      vars:
+        sys_iface: eno1
+        oob_iface: eno2
+        cls_iface: enp23s0
+        dmz_iface: enp179s0
+        dmz_gw_ip4: "{{ mon_dmz_gw_ip4 }}"
+
+    osds:
+      hosts:
+        dat01:
+          ansible_host: 172.16.3.111 # eno1
+          # onboard
+          bmc_iface_ip4: 172.16.3.121 # bmc
+          svc_iface_ip4: 172.16.3.111 # eno1
+          # mellanox
+          cls_iface_ip4: 172.16.2.111 # p6p1, enp101s0
+        dat02:
+          ansible_host: 172.16.3.112
+          bmc_iface_ip4: 172.16.3.122
+          svc_iface_ip4: 172.16.3.112
+          cls_iface_ip4: 172.16.2.112
+        dat03:
+          ansible_host: 172.16.3.113
+          bmc_iface_ip4: 172.16.3.123
+          svc_iface_ip4: 172.16.3.113
+          cls_iface_ip4: 172.16.2.113
+        dat04:
+          ansible_host: 172.16.3.114
+          bmc_iface_ip4: 172.16.3.124
+          svc_iface_ip4: 172.16.3.114
+          cls_iface_ip4: 172.16.2.114
+        dat05:
+          ansible_host: 172.16.3.115
+          bmc_iface_ip4: 172.16.3.125
+          svc_iface_ip4: 172.16.3.115
+          cls_iface_ip4: 172.16.2.115
+      vars:
+        sys_iface: eno1
+        cls_iface: enp101s0
+
+    gateway:
+      hosts:
+        mon02
+    
+
+
+
+
+
