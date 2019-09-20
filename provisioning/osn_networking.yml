@@ -1,0 +1,156 @@
+osn_networking:
+
+# *** COMMON TO ALL SITES *** #
+  all_sites:
+    networks:
+      bmc:
+        ip4: 172.16.3.0/24
+        gw: 172.16.3.12
+        iface: eno1
+      mgt:
+        ip4: 172.16.3.0/24
+        gw: 172.16.3.12
+        iface: eno1
+      cls:
+        ip4: 172.16.2.0/24
+        iface: {"mon": "enp23s0", "dat": "enp101s0"}
+      dmz:
+        iface: enp179s0
+      oob:
+        iface: eno2
+    mon01:
+      bmc_ip4: 172.16.3.21
+      mgt_ip4: 172.16.3.11
+      cls_ip4: 172.16.2.11
+    mon02:
+      bmc_ip4: 172.16.3.22
+      mgt_ip4: 172.16.3.12
+      cls_ip4: 172.16.2.12    
+    mon03:
+      bmc_ip4: 172.16.3.23
+      mgt_ip4: 172.16.3.13
+      cls_ip4: 172.16.2.12    
+    dat01:
+      bmc_ip4: 172.16.3.121
+      mgt_ip4: 172.16.3.111
+      cls_ip4: 172.16.2.111    
+    dat02:
+      bmc_ip4: 172.16.3.122
+      mgt_ip4: 172.16.3.112
+      cls_ip4: 172.16.2.112
+    dat03:
+      bmc_ip4: 172.16.3.123
+      mgt_ip4: 172.16.3.113
+      cls_ip4: 172.16.2.113    
+    dat04:
+      bmc_ip4: 172.16.3.124
+      mgt_ip4: 172.16.3.114
+      cls_ip4: 172.16.2.114  
+    dat05:
+      bmc_ip4: 172.16.3.125
+      mgt_ip4: 172.16.3.115
+      cls_ip4: 172.16.2.115
+    mlx01:
+      mgt_ip4: 172.16.3.31
+    kvm01:
+      mgt_ip4: 172.16.3.41
+    pdu01:
+      mgt_ip4: 172.16.3.51
+    pdu02:
+      mgt_ip4: 172.16.3.52
+
+# *** MGHP SPECIFIC *** #
+  mghp:
+    networks:
+      oob:
+        ip4: 192.69.102.0/24
+        gw: 192.69.102.1
+      dmz:
+        ip4: 192.69.103.240/28
+        gw: 192.69.103.241
+    mon01:
+      oob_ip4: 192.69.102.26
+      dmz_ip4: 192.69.103.246
+    mon02:
+      oob_ip4: 192.69.102.29
+      dmz_ip4: 192.69.103.247 
+    mon03:
+      oob_ip4: 192.69.102.28
+      dmz_ip4: 192.69.103.248
+
+# *** NCSA SPECIFIC *** #
+  ncsa:  
+    networks:
+      oob:
+        ip4: 141.142.142.16/28
+        gw: 192.69.102.17
+      dmz:
+        ip4: 141.142.142.0/28
+        gw: ""
+    mon01:
+      oob_ip4: 141.142.142.18
+      dmz_ip4: 141.142.142.2
+    mon02:
+      oob_ip4: 141.142.142.19
+      dmz_ip4: 141.142.142.3 
+    mon03:
+      oob_ip4: 141.142.142.20
+      dmz_ip4: 141.142.142.4
+
+# *** SDSC SPECIFIC *** #
+  sdsc:  
+    networks:
+      oob:
+        ip4: ""
+        gw4: ""
+      dmz:
+        ip: 132.249.228.96/28
+        gw: ""
+    mon01:
+      oob_ip4: 132.249.254.36
+      dmz_ip4: ""
+    mon02:
+      oob_ip4: 132.249.254.37
+      dmz_ip4: "" 
+    mon03:
+      oob_ip4: 132.249.254.38
+      dmz_ip4: ""
+
+# *** RENC SPECIFIC *** #
+  renc:  
+    networks:
+      oob:
+        ip4: ""
+        gw4: ""
+      dmz:
+        ip: 152.54.11.32/28
+        gw: ""
+    mon01:
+      oob_ip4: 152.54.0.71
+      dmz_ip4: ""
+    mon02:
+      oob_ip4: 152.54.0.72
+      dmz_ip4: ""
+    mon03:
+      oob_ip4: 152.54.0.73
+      dmz_ip4: ""
+
+# *** JHUX SPECIFIC *** #
+  jhux:  
+    networks:
+      oob:
+        ip4: 128.220.122.0/24
+        gw: ""
+      dmz:
+        ip4: ""
+        gw: ""
+    mon01:
+      oob_ip4: 128.220.122.21
+      dmz_ip4: ""
+    mon02:
+      oob_ip4: 128.220.122.22
+      dmz_ip4: ""
+    mon03:
+      oob_ip4: 128.220.122.23
+      dmz_ip4: ""
+
