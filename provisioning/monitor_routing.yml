@@ -1,25 +1,27 @@
 ---
 
-- hosts: mon01, mon03
-  gather_facts: no
-  tasks:
-    - name: defgw
-      set_fact:
-        default_gateway: 'mgt'
+#- hosts: mon01, mon03
+#  gather_facts: no
+#  tasks:
+#    - name: static and defgw
+#      set_fact:
+#        default_gateway: 'mgt'
+#        static_routes:
+#        - {'destination': "132.249.228.0/24", 'iface': "dmz"}
 
-- hosts: mon02
-  gather_facts: no
-  tasks:
-    - name: defgw
-      set_fact:
-        default_gateway: 'oob'
+#- hosts: mon02
+#  gather_facts: no
+#  tasks:
+#    - name: static and defgw
+#     set_fact:
+#       default_gateway: 'oob'
+#        static_routes:
+#       - {'destination': "132.249.228.0/24", 'iface': "dmz"}
 
 - hosts: monitors
   vars:
-    # default_gateway: 'oob'
-    static_routes:
-      - {'destination': "132.249.228.0/24", 'iface': "dmz"}
-
+    default_gateway: 'dmz'
+    
   tasks:
 
   # Add policy routing to make sure traffic arriving on an 

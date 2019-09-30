@@ -17,6 +17,8 @@
       set_fact:
         cert_age: "{{ timestamps.stdout_lines[0]|int - timestamps.stdout_lines[1]|int }}"
 
+    # I installed dns plugin into a python virtual environment
+    # for testing using conda; you can ignore the activate/deactivate...
     - name: renew cert if you need to
       shell: |
         conda activate osn

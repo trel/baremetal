@@ -22,34 +22,42 @@ osn_networking:
       oob:
         iface: eno2
     mon01:
+      default_gateway: 'dmz'
       bmc_ip4: 172.16.3.21
       mgt_ip4: 172.16.3.11
       cls_ip4: 172.16.2.11
     mon02:
+      default_gateway: 'dmz'
       bmc_ip4: 172.16.3.22
       mgt_ip4: 172.16.3.12
       cls_ip4: 172.16.2.12    
     mon03:
+      default_gateway: 'dmz'
       bmc_ip4: 172.16.3.23
       mgt_ip4: 172.16.3.13
       cls_ip4: 172.16.2.13    
     dat01:
+      default_gateway: 'mgt'
       bmc_ip4: 172.16.3.121
       mgt_ip4: 172.16.3.111
       cls_ip4: 172.16.2.111    
     dat02:
+      default_gateway: 'mgt'
       bmc_ip4: 172.16.3.122
       mgt_ip4: 172.16.3.112
       cls_ip4: 172.16.2.112
     dat03:
+      default_gateway: 'mgt'
       bmc_ip4: 172.16.3.123
       mgt_ip4: 172.16.3.113
       cls_ip4: 172.16.2.113    
     dat04:
+      default_gateway: 'mgt'
       bmc_ip4: 172.16.3.124
       mgt_ip4: 172.16.3.114
       cls_ip4: 172.16.2.114  
     dat05:
+      default_gateway: 'mgt'
       bmc_ip4: 172.16.3.125
       mgt_ip4: 172.16.3.115
       cls_ip4: 172.16.2.115
@@ -74,12 +82,17 @@ osn_networking:
         prefix: 28
         gw_ip4: 192.69.103.241
     mon01:
+      default_gateway: 'mgt'
       oob_ip4: 192.69.102.26
       dmz_ip4: 192.69.103.246
     mon02:
+      default_gateway: 'oob'
       oob_ip4: 192.69.102.29
-      dmz_ip4: 192.69.103.247 
+      dmz_ip4: 192.69.103.247
+      static_routes:
+      - {'destination': "132.249.228.0/24", 'iface': "dmz"}
     mon03:
+      default_gateway: 'mgt'
       oob_ip4: 192.69.102.28
       dmz_ip4: 192.69.103.248
 
