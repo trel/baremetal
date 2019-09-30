@@ -1,39 +1,28 @@
-- name: ensure nm dispatcher is enabled/running
-  service:
-    name: NetworkManager-dispatcher.service
-    enabled: yes
-    state: started
+---
 
-- name: Assign static addresses to dmz interface
-  nmcli:
-    type: ethernet
-    conn_name: "System {{networks.dmz.iface}}"
-    ip4: "{{addresses.dmz_ip4}}/{{ networks.dmz.prefix }}"
-    ifname: "{{networks.dmz.iface}}"
-    state: present
-  notify:
-  - restart networking
+- hosts: mon01, mon03
+  gather_facts: no
+  tasks:
+    - name: defgw
+      set_fact:
+        default_gateway: 'mgt'
 
-- name: really make static (bug in nmcli module)
-  shell:
-    nmcli con mod "System {{networks.dmz.iface}}" ipv4.method manual
+- hosts: mon02
+  gather_facts: no
+  tasks:
+    - name: defgw
+      set_fact:
+        default_gateway: 'oob'
 
-- name: Allow dmz source subnets
-  shell:
-    firewall-cmd --permanent --zone=dmz --add-rich-rule='rule family="ipv4" source address="{{ item }}" port port=8080 protocol="tcp" accept' 
-  loop:
-    "{{ dmz_allowed_ip4_list }}"
-  notify:
-  - reload fw
+- hosts: monitors
+  vars:
+    # default_gateway: 'oob'
+    static_routes:
+      - {'destination': "132.249.228.0/24", 'iface': "dmz"}
 
-- name: put external interfaces in dmz
-  shell:
-    nmcli con mod "{{ item }}" connection.zone dmz
-  loop:
-    - "{{networks.oob.iface}}"
-    - "System {{networks.dmz.iface}}" 
+  tasks:
 
-# Add policy routing to make sure traffic arriving on an 
+  # Add policy routing to make sure traffic arriving on an 
   # interface leaves on the same interface
 
   - name: create route tables
@@ -64,16 +53,14 @@
 
   # Configure static and default routes
 
-  # Static route entries are of form {'destination': d, 'iface': i} e.g.:
-  # {'destination': "132.249.228.0/24", 'iface': "dmz"}
   - name: static routes
     lineinfile:
       path: "/etc/sysconfig/network-scripts/route-{{networks[item.iface].iface}}"
       line: "{{item.destination}} via {{networks[item.iface].gw_ip4}} dev {{networks[item.iface].iface}}"
     loop:
-      "{{addresses.static_routes}}"
+      "{{static_routes}}"
     when:
-      addresses.static_routes is defined
+      static_routes is defined
 
   - name: delete any existing default gateways
     lineinfile:
@@ -88,5 +75,16 @@
       path: "/etc/sysconfig/network-scripts/ifcfg-{{networks[default_gateway]['iface']}}"
       line: "GATEWAY={{networks[default_gateway]['gw_ip4']}}"
 
+  - name: restart network
+    service: 
+      name: network
+      state: restarted
+
+
+
+
+
+
+ 
 
 

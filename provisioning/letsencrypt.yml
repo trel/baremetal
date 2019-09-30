@@ -1,0 +1,49 @@
+- hosts: mon03
+  gather_facts: no
+  vars:
+    - certhome: /home/jculbert/certbot/config/live/osn.mghpcc.org
+    - certbothome: /home/jculbert/certbot
+    - haproxy_certloc: /etc/ssl/certs/osn.pem
+    # 25 days -> 25 * 24 * 60 * 60 = 2246400
+    - max_age_seconds: 2246400
+  tasks:
+    - name: refresh local cert
+      shell: |
+        date +%s;stat -c %Y {{ certhome }}/fullchain.pem
+      register: timestamps
+      delegate_to: 127.0.0.1
+
+    - name: set timestamp facts
+      set_fact:
+        cert_age: "{{ timestamps.stdout_lines[0]|int - timestamps.stdout_lines[1]|int }}"
+
+    - name: renew cert if you need to
+      shell: |
+        conda activate osn
+        certbot certonly -c "{{certbothome}}"/osn_cli.ini -d *.osn.mghpcc.org
+        conda deactivate
+      when:
+        cert_age|int > max_age_seconds
+
+    # Note: assemble cats in lexical order
+    # files happen to cat the way haproxy needs
+    # should not rely on this behavior...
+    - name: copy haproxy cert to remote machine
+      assemble:
+        remote_src: no
+        src: "{{certhome}}"
+        dest: "{{haproxy_certloc}}"
+        regexp: "cert\\.pem|chain\\.pem|privkey\\.pem"
+      notify:
+        restart haproxy
+
+  handlers:
+    - name: restart haproxy
+      service:
+        name: haproxy
+        state: restarted
+
+
+
+
+        

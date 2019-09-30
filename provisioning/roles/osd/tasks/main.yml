@@ -1,9 +1,23 @@
 ---
 - import_tasks: networking.yml
 
-- name: cleanup /dev/sda for ceph install
+- name: Get confirmation before disk wipe 
+  pause: 
+    prompt: |
+      This script will wipe the osd disks on this machine. Hit ctrl-c to abort.
+
+- name: wipe disks for ceph install
   shell: |
-    wipefs -a -f /dev/sda
-    touch /tmp/wiped
-  args:
-    creates: /tmp/wiped    
+    wipefs -a -f /dev/{{item}}
+  loop: 
+    ["sda", "sdb", "sdc", "sdd", "sde", "sdf", "sdg", "sdh", "sdi", 
+    "sdj", "sdk", "sdl", "sdm", "sdn", "sdo", "sdp", "sdq", "sdr", 
+    "sds", "sdt", "sdu", "sdv", "sdw", "sdx", "sdy", "sdz", "sdaa", "sdab", 
+    "sdac", "sdad", "sdae", "sdaf", "sdag", "sdah", "sdai", "sdaj"]
+
+- name: remove lvm cruft
+  shell: |
+    set -o pipefail;
+    ls /dev/mapper/ceph-* | xargs -I% -- dmsetup remove -f %;
+    vgdisplay | grep ceph- | sed 's/VG Name\s*//g' | xargs -I% -- vgremove -y %
+    rm -rf /dev/ceph-*;

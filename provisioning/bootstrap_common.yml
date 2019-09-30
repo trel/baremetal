@@ -5,8 +5,8 @@
   tasks:
     - name: pxe boot nodes
       shell: |
-        ipmitool -I lanplus -H {{ bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis bootparam set bootflag force_pxe
-        ipmitool -I lanplus -H {{ bmc_iface_ip4 }} -U ADMIN -P ADMIN chassis power reset
+        ipmitool -I lanplus -H {{ addresses.bmc_ip4 }} -U ADMIN -P ADMIN chassis bootparam set bootflag force_pxe
+        ipmitool -I lanplus -H {{ addresses.bmc_ip4  }} -U ADMIN -P ADMIN chassis power reset
       delegate_to: "{{ item }}"
       with_items: "{{ groups['gateway'] }}"
 
@@ -14,6 +14,12 @@
       wait_for_connection:
         delay: 15
         timeout: 900
+
+    - name: remove old node hostkey
+      known_hosts:
+        name: "{{ansible_host}}"
+        state: absent
+      delegate_to: 127.0.0.1
 
     - import_role:
         name: common

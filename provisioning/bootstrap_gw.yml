@@ -4,7 +4,7 @@
 
 - hosts: gateway
   vars:
-    ansible_host: "{{ oob_iface_ip4 }}"
+    ansible_host: "{{ addresses.oob_ip4 }}"
 
   tasks:
     - import_role:
@@ -16,6 +16,12 @@
       wait_for_connection:
         delay: 15
         timeout: 900
+
+    - name: remove old gw hostkey
+      known_hosts:
+        name: "{{ansible_host}}"
+        state: absent
+      delegate_to: 127.0.0.1
 
     - import_role:
         name: common
